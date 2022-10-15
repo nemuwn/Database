@@ -1,0 +1,147 @@
+1
+SELECT fName, position1, salary
+FROM staff
+WHERE branchNo IN (SELECT branchNo
+                   FROM branch
+                   WHERE city="London")
+ORDER BY salary
+
+2
+SELECT viewdate, propertyNo, comment1
+FROM viewing 
+WHERE clientNo IN (SELECT clientNo
+                   FROM  client1
+                   WHERE fName="Aline")
+                   
+3
+SELECT fName, lName, position1
+FROM staff
+WHERE staffNo IN (SELECT staffNo
+                  FROM propertyforrent
+                  WHERE rooms=4 AND sex="M") 
+ORDER BY branchNo
+                  
+4
+SELECT type1, MAX(rent), MIN(rent)
+FROM propertyforrent
+GROUP BY type1 
+
+5
+SELECT s.*, b.*
+FROM staff s, branch b
+WHERE s.branchNo=b.branchNo 
+ORDER BY DOB DESC 
+LIMIT 1
+
+6
+SELECT staffNo, salary-(SELECT MIN(salary) FROM staff) AS diff
+FROM staff
+WHERE salary> (SELECT MIN(salary) FROM staff)
+
+7
+SELECT *
+FROM propertyforrent
+WHERE staffNo IN (SELECT staffNo
+                  FROM staff 
+                  WHERE branchNo = (SELECT branchNo
+                                   FROM branch
+                                   WHERE street="16 Argyll St"))
+
+8
+SELECT *
+FROM staff
+WHERE salary>ALL(SELECT salary 
+                  FROM staff
+                  WHERE branchNo="B003")
+                 
+9
+SELECT p.*
+FROM viewing v, propertyforrent p
+WHERE v.propertyNo=p.propertyNo
+GROUP BY  v.propertyNo
+ORDER BY COUNT(v.propertyNo) DESC
+LIMIT 2
+
+10
+SELECT *
+FROM client1 
+WHERE clientNo = (SELECT clientNo
+                  FROM registration
+GROUP BY dateJoined DESC
+LIMIT 1)
+
+11
+SELECT *, salary/2 AS halfMonthSalary
+FROM staff
+ORDER BY position1
+
+12
+SELECT position1, sex, COUNT(sex) 
+FROM staff 
+GROUP BY position1, sex 
+ORDER BY COUNT(sex) DESC
+
+13
+SELECT branchNo, COUNT(staffNo) AS "count1", SUM(salary) AS "sum" 
+FROM Staff
+GROUP BY branchNo
+HAVING COUNT(branchNo)>1
+ORDER BY branchNo
+
+
+14
+SELECT ownerNo, propertyNo, rent, type1, rooms
+FROM propertyforrent
+WHERE rent>all(select rent
+               from propertyforrent 
+               where ownerNo=(select ownerNo
+                              from privateowner
+                              where telNo="0141-357-7419"))
+
+
+15
+SELECT city, rooms, rent
+FROM propertyforrent
+WHERE propertyNo IN (SELECT propertyNo
+                     FROM viewing
+                     WHERE comment1="too small")
+
+16
+SELECT *
+FROM propertyforrent
+WHERE staffNo IN (SELECT staffNo
+                  FROM registration
+                  WHERE clientNo IN (SELECT clientNo
+                                     FROM client1
+                                     WHERE fName="Mike"))
+
+17
+SELECT b.branchNo, b.street, s.staffNo, s.fName, s.DOB
+FROM staff s, registration r, branch b
+WHERE s.staffNo=r.staffNo AND b.branchNo=s.branchNo AND r.dateJoined="2003-03-07"
+
+18
+SELECT *
+FROM propertyforrent
+WHERE rent<ALL (SELECT rent
+                FROM propertyforrent
+                WHERE ownerNo=(SELECT ownerNo
+                              FROM privateowner
+                              WHERE fName="Carol"))
+
+19 
+SELECT branchNo,city, count(branchNo)
+from branch
+group by city
+
+20
+SELECT *
+FROM propertyforrent
+WHERE rent>ALL (SELECT rent
+                FROM propertyforrent
+                WHERE ownerNo=(SELECT ownerNo
+                              FROM privateowner
+                              WHERE fName="Tony"))
+                              
+
+                  

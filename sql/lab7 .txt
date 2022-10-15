@@ -1,0 +1,117 @@
+1.
+a
+SELECT hotelNo
+FROM room
+WHERE price>50
+
+b
+SELECT Hotel.*, Room.*
+FROM Hotel, Room
+WHERE Hotel.hotelNo=Room.hotelNo
+
+c
+SELECT hotelName
+FROM Hotel
+JOIN Room
+ON hotelNo=hotelNo AND price>50
+
+                                  
+d
+SELECT *
+FROM Guest
+LEFT JOIN Booking
+WHERE dateTo >="1-Jan-2002"
+
+e
+SELECT *
+FROM Hotel 
+WHERE hotelNo IN (SELECT hotelNo
+                  FROM Room
+                  WHERE price>50)
+                  
+f
+SELECT guestName, hotelNo
+FROM Booking 
+
+This will produce a relation containing the NAMES of ALL guest who have booked ALL hotels IN London.
+
+
+2.
+a) σ propertyNo LIKE "PG%"∧type="House"(propertyforrent)
+b) σ salary>15000∧sex="F"(staff)
+c) σ DOB LIKE "%-10-%"∧sex="M"(staff)
+d) σ rent >=400∧rent<=600∧ city="Glasgow"(propertyforrent)
+e) π clientNo, viewDate(σcomment1="no dining room"(viewing)) 
+
+
+
+3.
+1
+SELECT p.propertyNo, p.city, p.rent, p.staffNo, s.fName, s.lName, s.position1
+FROM propertyforrent p, staff s
+WHERE p.staffNo=s.staffNo
+
+2
+SELECT s.branchNo, s.staffNo, COUNT(p.propertyNo)
+FROM staff s, propertyforrent p
+WHERE p.staffNo=s.staffNo
+GROUP BY s.staffNo
+
+3
+SELECT s.branchNo, s.staffNo, COUNT(p.propertyNo), AVG(p.rent), MAX(p.rent), MIN(p.rent)
+FROM staff s, propertyforrent p
+WHERE p.staffNo=s.staffNo
+GROUP BY s.staffNo
+
+4
+SELECT b.*, p.*
+FROM branch b 
+INNER JOIN propertyforrent p 
+ON b.city = p.city
+
+5
+SELECT b.*, p.*
+FROM branch b 
+LEFT JOIN propertyforrent p 
+ON b.city = p.city
+
+SELECT b.*, p.*
+FROM branch b 
+RIGHT JOIN propertyforrent p 
+ON b.city = p.city
+
+LEFT JOIN нь зүүн TABLE-н баруунаас ялгаатай хотын нэрсийг гаргаж ирж байна
+RIGHT JOIN нь баруун TABLE-н зүүнээс ялгаатай хотын нэрсийг гаргаж ирж байна
+
+6 
+SELECT city FROM branch
+EXCEPT
+SELECT city FROM propertyforrent
+
+7
+SELECT city
+FROM branch 
+intersect 
+SELECT city
+FROM propertyforrent	
+
+8
+SELECT v.clientNo, c.telNo, p.city, p.rent, s.fName
+FROM (((viewing v
+      INNER JOIN client1 c ON  v.clientNo=c.clientNo AND v.comment1="no dining room")
+      INNER JOIN propertyforrent p ON p.propertyNo=v.propertyNo)
+      INNER JOIN staff s ON p.staffNo=s.staffNo)
+      
+ 9
+ SELECT r.staffNo, s.fName, s.position1, b.city, b.branchNo
+ FROM (((client1 c
+       INNER JOIN registration r ON c.clientNo=r.clientNo AND c.fName="John")
+       INNER JOIN staff s ON r.staffNo=s.staffNo)
+       INNER JOIN branch b ON s.branchNo=b.branchNo)
+ 
+ 10
+    SELECT c.*
+    FROM (((privateowner pr
+          INNER JOIN propertyforrent p ON pr.ownerNo=p.ownerNo AND pr.fName="Tony")
+          INNER JOIN viewing v ON p.propertyNo=v.propertyNo)
+          INNER JOIN client1 c ON v.clientNo=c.clientNo)

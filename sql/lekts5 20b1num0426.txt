@@ -1,0 +1,120 @@
+~~~LAB3~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+1)
+SELECT *
+FROM staff
+WHERE position1="Manager" OR position1="Supervisor"
+
+σ position1="Manager"∨position1="Supervisor"(staff))
+
+2)
+SELECT *
+FROM staff
+WHERE sex="F"
+
+σsex = F(staff)
+
+4)
+SELECT *
+FROM propertyforrent
+WHERE rent>450 OR city="London"
+
+σ rent>450"∨city="London(propertyforrent)
+
+5)
+SELECT city, ownerNo, rent
+FROM propertyforrent
+WHERE staffNo!=" "
+
+πcity, ownerNo, rent(σstaffNo1=" "(propertyforrent))
+
+6)
+SELECT *
+FROM staff
+WHERE salary>20000 AND sex="M"
+
+σsalary>20000∧sex="M"(staff)
+
+~~~LAB4~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+3)
+SELECT *
+FROM staff
+WHERE lName LIKE "B%"
+
+σlName like "%B%"(staff)
+
+
+6)
+SELECT AVG(salary) AS SalaryAVG
+FROM staff
+
+G AVG(salary) AS SalaryAVG(staff)
+
+
+8)
+SELECT COUNT(staffNo), MAX(salary) AS maxSalary, MIN(salary) AS minSalary, AVG(salary) AS avgSalary
+FROM staff
+WHERE sex="M"
+
+G COUNT(staffNo), MAX(salary) AS maxSalary, MIN(salary) AS minSalary, AVG(salary) AS avgSalary (σ sex="M"(staff))
+
+
+9)
+SELECT SUM(rent) AS sumRent, MAX(rent) AS maxRent
+FROM propertyforrent
+WHERE rooms=3 AND type1="Flat"
+
+G SUM(rent) AS sumRent, MAX(rent) AS maxRent (σ rooms=3∧type1="Flat"(propertyforrentstaff))
+
+
+10)
+SELECT *
+FROM propertyforrent
+WHERE city="Glasgow" AND (propertyNo LIKE "%6")
+
+σcity="Glasgow"∧propertyNo like "%6"(propertyforrent)
+
+
+11)
+SELECT branchNo, postcode
+FROM branch
+WHERE street="16 Argyll St"
+
+πbranchNo, postcode(σstaffNo1=" "street="16 Argyll St"(branch))
+
+19)
+SELECT *
+FROM client1
+WHERE telno LIKE "%8%8%8%"
+
+σtelno like "%8%8%8%"(client1)
+
+
+~~~LAB5~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+2)
+SELECT viewdate, propertyNo, comment1
+FROM viewing 
+WHERE clientNo IN (SELECT clientNo
+                   FROM  client1
+                   WHERE fName="Aline")
+
+select v.viewdate, v.propertyNo, v.comment1
+from viewing v, client1 c
+where v.clientNo=c.clientNo AND c.fName="Aline"
+
+πviewdate, propertyNo, comment1(σfName="Aline"(viewing |><| client1 )
+ 
+
+4)
+SELECT type1, MAX(rent), MIN(rent)
+FROM propertyforrent
+GROUP BY type1 
+
+type1 G MAX(rent),Min(rent)(propertyforrent)
+
+
+19)
+SELECT branchNo,city, COUNT(branchNo)
+FROM branch
+GROUP BY city
+
+city G COUNT(branchNo)(branch)
